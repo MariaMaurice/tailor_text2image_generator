@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 class AppColours {
-  static HexColor backgroundColor = HexColor("#f1eee9");
-  static HexColor widgetColor = HexColor("#473630");
+  static Color backgroundColor = Colors.white;
+  static Color textColor = Colors.black;
+  static Color color = Colors.amber;
+  static Color widgetColor = Colors.white;
 }

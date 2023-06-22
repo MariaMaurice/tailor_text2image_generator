@@ -26,7 +26,7 @@ class DefultButton extends StatefulWidget {
 class _DefultButton extends State<DefultButton> {
   final String text, toWhere;
   String nwAT;
-  String text2 = "Saving";
+  String text2 = "Saving...";
   String text3 = "Saved";
 
   _DefultButton(this.text, this.toWhere, this.nwAT);
@@ -44,6 +44,9 @@ class _DefultButton extends State<DefultButton> {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 7.w),
       child: FloatingActionButton.extended(
+          shape: Border.all(
+            width: 5,
+          ),
           onPressed: () async {
             if (nwAT == 'home') {
               if (DisplayImage.text == '') {
@@ -53,9 +56,12 @@ class _DefultButton extends State<DefultButton> {
                 Navigator.pushReplacementNamed(context, toWhere);
               }
             } else if (nwAT == 'imageTogallery') {
-              final result = await ImageGallerySaver.saveImage(
-                  Uint8List.fromList(DisplayImage.saveGallaryImg),
-                  quality: 60);
+              for (int i = 0; i < DisplayImage.saveGallaryImg.length; i++) {
+                await ImageGallerySaver.saveImage(
+                    Uint8List.fromList(DisplayImage.saveGallaryImg[i]),
+                    quality: 60);
+              }
+
               setState(() {
                 isSaved = true;
               });
@@ -75,14 +81,14 @@ class _DefultButton extends State<DefultButton> {
             }
           },
           elevation: 12,
-          backgroundColor: AppColours.widgetColor,
+          backgroundColor: Colors.black,
           label: Text(
             isLoading
                 ? "\n                 $text2                 \n"
                 : isSaved
                     ? "\n                 $text3                 \n"
                     : "\n                 $text                 \n",
-            style: TextStyle(color: AppColours.backgroundColor, fontSize: 20),
+            style: TextStyle(color: Colors.white, fontSize: 20),
           )),
     );
   }

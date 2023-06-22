@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gp/Screens/HomePage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:gp/providers/DataBase.dart';
 import '../Screens/Login.dart';
 
 class AuthService {
@@ -30,6 +31,9 @@ class AuthService {
 
   //Sign out
   Future<void> signOut() async {
+    DataBase.history = [];
+    Email = '';
+    ID = '';
     await _googleSignIn.signOut();
     await _auth.signOut();
   }

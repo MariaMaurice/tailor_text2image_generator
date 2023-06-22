@@ -42,7 +42,7 @@ class _Login extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppColours.backgroundColor,
+        backgroundColor: HexColor("#10110e"),
         resizeToAvoidBottomInset: true,
         body: WillPopScope(
           child: SingleChildScrollView(

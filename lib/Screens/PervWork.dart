@@ -34,7 +34,7 @@ class _PrevWorkState extends State<PrevWork> {
       backgroundColor: AppColours.backgroundColor,
       resizeToAvoidBottomInset: true,
       body: isLoading
-          ? CircularProgressIndicator()
+          ? Center(child: CircularProgressIndicator())
           : Column(children: [
               Container(height: 30.h, child: Image.asset('assets/history.png')),
               Expanded(

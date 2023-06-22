@@ -22,8 +22,7 @@ class _PrevWorkWidState extends State<PrevWorkWid> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-        child: Column(
+    return Column(
       children: [
         ListTile(
           title: Text(
@@ -46,7 +45,8 @@ class _PrevWorkWidState extends State<PrevWorkWid> {
               padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.w),
               height: 35.h,
               child: FullScreenWidget(child: Image.network(item.image))),
+        Divider()
       ],
-    ));
+    );
   }
 }

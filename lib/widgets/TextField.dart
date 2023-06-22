@@ -35,12 +35,6 @@ class _DefultTextField extends State<DefultTextField> {
   int maxln;
   _DefultTextField(this.text, this.isPassword, this.haveicon, this.icon,
       this.maxln, this.nwAT);
-  bool isHide = false;
-  @override
-  void initState() {
-    super.initState();
-    isHide = !isPassword ? true : false;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,36 +48,17 @@ class _DefultTextField extends State<DefultTextField> {
                 DisplayImage.text = value;
               });
             },
-            style: TextStyle(color: AppColours.backgroundColor),
+            style: TextStyle(color: AppColours.textColor),
             maxLines: maxln,
-            cursorColor: AppColours.backgroundColor,
-            obscureText: isHide ? false : true,
             decoration: InputDecoration(
               fillColor: AppColours.widgetColor,
-              prefixIcon: haveicon
-                  ? Icon(
-                      icon,
-                      color: AppColours.backgroundColor,
-                    )
-                  : SizedBox(),
-              suffixIcon: isPassword
-                  ? IconButton(
-                      color: AppColours.backgroundColor,
-                      icon: Icon(!isHide
-                          ? Icons.visibility_off
-                          : Icons.remove_red_eye),
-                      onPressed: () {
-                        setState(() {
-                          isHide = !isHide;
-                        });
-                      })
-                  : SizedBox(),
               hintText: text,
               hintStyle:
-                  TextStyle(color: AppColours.backgroundColor, fontSize: 18),
+                  TextStyle(color: AppColours.textColor, fontSize: 15.sp),
               filled: true,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20.0),
+                borderSide: BorderSide(width: 5, color: AppColours.color),
+                borderRadius: BorderRadius.circular(10.0),
               ),
             )),
       ),

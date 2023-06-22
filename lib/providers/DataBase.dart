@@ -6,6 +6,7 @@ import 'package:gp/Screens/DisplayImage.dart';
 import 'package:gp/providers/AuthService.dart';
 import 'package:http/http.dart' as http;
 import 'package:gp/providers/HistoryItem.dart';
+import 'package:gp/widgets/Category.dart';
 
 class DataBase {
   static bool isPrevWork = false;
@@ -15,31 +16,43 @@ class DataBase {
     String email = AuthService.Email!;
     isPrevWork = true;
     final _firebaseStorage = FirebaseStorage.instance;
-    //Select Image
-    var file = File(DisplayImage.bytes.path);
-    var snapshot = await _firebaseStorage
-        .ref()
-        .child('images/${DateTime.now().microsecondsSinceEpoch}')
-        .putFile(file);
 
-    var downloadUrl = await snapshot.ref.getDownloadURL();
-
-    final url =
-        'https://tailor-6cc1a-default-rtdb.firebaseio.com/$email/Images.json';
-    try {
-      final response = await http.post(
-        Uri.parse(url),
-        body: json.encode({
-          'text': DisplayImage.text,
-          'image': downloadUrl,
-        }),
-      );
-      if (history.isNotEmpty) {
-        history.add(Item(text: DisplayImage.text, image: downloadUrl));
+    for (int i = 0; i < DisplayImage.imagePath.length; i++) {
+      //Select Image
+      var f;
+      if (Category.category == "Wedding Dress" ||
+          Category.category == "Casual") {
+        f = await DisplayImage.imagePath[i]
+            .writeAsBytes(base64Decode(DisplayImage.bytes[i]));
+      } else {
+        f = await DisplayImage.imagePath[i].writeAsBytes(DisplayImage.bytes[i]);
       }
-    } catch (error) {
-      print(error);
-      throw error;
+
+      var file = File(f.path);
+      var snapshot = await _firebaseStorage
+          .ref()
+          .child('images/${DateTime.now().microsecondsSinceEpoch}$i')
+          .putFile(file);
+
+      var downloadUrl = await snapshot.ref.getDownloadURL();
+
+      final url =
+          'https://tailor-6cc1a-default-rtdb.firebaseio.com/$email/Images.json';
+      try {
+        final response = await http.post(
+          Uri.parse(url),
+          body: json.encode({
+            'text': DisplayImage.text,
+            'image': downloadUrl,
+          }),
+        );
+        if (history.isNotEmpty) {
+          history.add(Item(text: DisplayImage.text, image: downloadUrl));
+        }
+      } catch (error) {
+        print(error);
+        throw error;
+      }
     }
   }
 
