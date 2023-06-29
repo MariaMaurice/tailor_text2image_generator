@@ -1,23 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:gp/Screens/DisplayImage.dart';
-import 'package:gp/providers/DataBase.dart';
 import 'package:gp/widgets/DeafultButton.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
-import 'package:country_picker/country_picker.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:gp/Screens/HomePage.dart';
 import '../Constants/AppColours.dart';
 import '../widgets/BottomBar.dart';
-import '../widgets/Logo.dart';
 import 'package:full_screen_image_null_safe/full_screen_image_null_safe.dart';
-import 'package:gp/widgets/Category.dart';
 
 class DisplayImage extends StatefulWidget {
   static List<Image> image = [];
@@ -93,6 +84,11 @@ class _DisplayImage extends State<DisplayImage> {
                   nwAT: 'imageTOprev',
                   toWhere: '/prevWork',
                 ),
+                DefultButton(
+                  text: "Feedback",
+                  nwAT: 'feedback',
+                  toWhere: '/prevWork',
+                ),
               ],
             ))
           : Center(
@@ -107,7 +103,7 @@ Future<void> APIgetter(String text) async {
   DisplayImage.saveGallaryImg.clear();
   DisplayImage.imagePath.clear();
   DisplayImage.image.clear();
-  if (Category.category == "Wedding Dress") {
+  if (HomePage.category == "Wedding Dress") {
     final url = Uri.parse(
         'https://amgad59-keras-cv-wedding-dress.hf.space/run/predict');
     final headers = {"Content-Type": "application/json"};
@@ -169,7 +165,7 @@ Future<void> APIgetter(String text) async {
         print('Failed to generate image');
       }
     }
-  } else if (Category.category == "Casual") {
+  } else if (HomePage.category == "Casual") {
     final url = Uri.parse('https://amgad59-test-space.hf.space/run/predict');
     final headers = {"Content-Type": "application/json"};
 
@@ -277,109 +273,4 @@ Future<void> APIgetter(String text) async {
       }
     }
   }
-
-  // image2 = Image.memory(base64Decode(base));
-  // base =
-  // image3 = Image.memory(base64Decode(base));
-  // base =
-  // image4 = Image.memory(base64Decode(base));
-
-//  );
-  // final url = Uri.parse(
-  //     'https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-1');
-  // final headers = {
-  //   'Authorization': 'Bearer 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'
-  // };
-  // final response =
-  //     await http.post(url, headers: headers, body: jsonEncode(text));
-  // final result = jsonDecode(response.body);
-  // print(jsonEncode(result));
-
-  //const baseUrl = 'https://api.stability.ai';
-  // final url =
-  //     Uri.parse('https://sayakpaul-pokemon-sd-kerascv.hf.space/run/predict');
-
-  // final response = await http
-  //     .post(
-  //   Uri.parse(
-  //       'https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-1'),
-  //   headers: {'Authorization': "Bearer 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"},
-  //   body: jsonEncode({text ?? ''}),
-  // )
-  //     .then((response) {
-  //   final data = jsonDecode(response.body);
-  //   print(data);
-  // }).catchError((error) {
-  //   print(error);
-  // });
-
-  // print(response.body);
-  // final response = await http.post(
-  //   url,
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     'Authorization': 'sk-bqvENEQ8pWbLxQy1YUI0w1F10gFK4hvpiwJo1tp6QDy10qsG',
-  //     'Accept': 'image/png',
-  //   },
-  //   body: jsonEncode({
-  //     'cfg_scale': 7,
-  //     'clip_guidance_preset': 'FAST_BLUE',
-  //     'height': 512,
-  //     'width': 512,
-  //     'samples': 1,
-  //     'steps': 50,
-  //     'text_prompts': [
-  //       {
-  //         'text': text ?? '',
-  //         'weight': 1,
-  //       }
-  //     ],
-  //   }),
-  // );
-
-  // DisplayImage.image = Image.memory(response.bodyBytes);
-  //DisplayImage.bytes = response.bodyBytes;
-
-  // var request = http.Request(
-  //     'GET',
-  //     Uri.parse(
-  //         'https://api.newnative.ai/stable-diffusion?prompt=futuristic spce station,'
-  //         ' 4k digital art'));
-  // try {
-  //   http.StreamedResponse response = await request.send();
-  //   print(response.stream.bytesToString());
-  // } catch (error) {
-  //   print(error);
-  //   throw error;
-  // }
-
-  //List<UploadTask> _uploadTasks = [];
-  // Future<UploadTask?> uploadFile(File? file) async {
-  //   if (file == null) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(
-  //         content: Text('No file was selected'),
-  //       ),
-  //     );
-  //
-  //     return null;
-  //   }
-  //
-  //   UploadTask uploadTask;
-  //
-  //   // Create a Reference to the file
-  //   Reference ref = FirebaseStorage.instance
-  //       .ref()
-  //       .child('flutter-tests')
-  //       .child('/some-image.jpg');
-  //
-  //   final metadata = SettableMetadata(
-  //     contentType: 'image/jpeg',
-  //     customMetadata: {'picked-file-path': file.path},
-  //   );
-  //
-  //   uploadTask = ref.putFile(io.File(file.path), metadata);
-  //
-  //   return Future.value(uploadTask);
-  // }
 }

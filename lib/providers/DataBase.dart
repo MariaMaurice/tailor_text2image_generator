@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 import 'package:gp/Screens/DisplayImage.dart';
 import 'package:gp/providers/AuthService.dart';
 import 'package:http/http.dart' as http;
 import 'package:gp/providers/HistoryItem.dart';
-import 'package:gp/widgets/Category.dart';
+
+import '../Screens/HomePage.dart';
 
 class DataBase {
   static bool isPrevWork = false;
@@ -20,8 +20,8 @@ class DataBase {
     for (int i = 0; i < DisplayImage.imagePath.length; i++) {
       //Select Image
       var f;
-      if (Category.category == "Wedding Dress" ||
-          Category.category == "Casual") {
+      if (HomePage.category == "Wedding Dress" ||
+          HomePage.category == "Casual") {
         f = await DisplayImage.imagePath[i]
             .writeAsBytes(base64Decode(DisplayImage.bytes[i]));
       } else {
@@ -73,4 +73,44 @@ class DataBase {
       print(history);
     } catch (error) {}
   }
+
+  static Future<void> addFeedback(String feedback) async {
+    // final _firebaseStorage = FirebaseStorage.instance;
+    //
+    // for (int i = 0; i < DisplayImage.imagePath.length; i++) {
+    //   //Select Image
+    //   var f;
+    //   if (HomePage.category == "Wedding Dress" ||
+    //       HomePage.category == "Casual") {
+    //     f = await DisplayImage.imagePath[i]
+    //         .writeAsBytes(base64Decode(DisplayImage.bytes[i]));
+    //   } else {
+    //     f = await DisplayImage.imagePath[i].writeAsBytes(DisplayImage.bytes[i]);
+    //   }
+    //
+    //   var file = File(f.path);
+    //   var snapshot = await _firebaseStorage
+    //       .ref()
+    //       .child('images/${DateTime.now().microsecondsSinceEpoch}$i')
+    //       .putFile(file);
+    //
+    //   var downloadUrl = await snapshot.ref.getDownloadURL();
+
+    final url =
+        'https://tailor-6cc1a-default-rtdb.firebaseio.com/Feedback.json';
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: json.encode({
+          'text': DisplayImage.text,
+          //'image': downloadUrl,
+          "feedback": feedback
+        }),
+      );
+    } catch (error) {
+      print(error);
+      throw error;
+    }
+  }
+  // }
 }

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +27,6 @@ class DefultButton extends StatefulWidget {
 class _DefultButton extends State<DefultButton> {
   final String text, toWhere;
   String nwAT;
-  String text2 = "Saving...";
-  String text3 = "Saved";
 
   _DefultButton(this.text, this.toWhere, this.nwAT);
 
@@ -76,6 +75,8 @@ class _DefultButton extends State<DefultButton> {
                       isSaved = true;
                     })
                   });
+            } else if (nwAT == "feedback") {
+              feedbackFunction();
             } else {
               Navigator.pushReplacementNamed(context, toWhere);
             }
@@ -84,9 +85,9 @@ class _DefultButton extends State<DefultButton> {
           backgroundColor: Colors.black,
           label: Text(
             isLoading
-                ? "\n                 $text2                 \n"
+                ? "\n                 Saving...                 \n"
                 : isSaved
-                    ? "\n                 $text3                 \n"
+                    ? "\n                 Saved                 \n"
                     : "\n                 $text                 \n",
             style: TextStyle(color: Colors.white, fontSize: 20),
           )),
@@ -96,5 +97,60 @@ class _DefultButton extends State<DefultButton> {
   void showSnackBar(BuildContext context, String text) {
     final snackBar = SnackBar(content: Text(text));
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  void feedbackFunction() {
+    String? feedback;
+    Widget okButton = TextButton(
+        child: Text(
+          "Submit",
+          style: TextStyle(color: Colors.black),
+        ),
+        onPressed: () {
+          // exit(0);
+          //save Feedback
+          if (feedback != null) {
+            DataBase.addFeedback(feedback!).then(
+                (value) => {Navigator.of(context).pop(), print(feedback)});
+          } else {
+            showSnackBar(context, "Enter feedback or press cancel");
+          }
+        });
+    Widget cancelButton = TextButton(
+        child: Text(
+          "cancel",
+          style: TextStyle(color: Colors.black),
+        ),
+        onPressed: () {
+          Navigator.of(context).pop();
+        });
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(15)),
+            title: Text("Feedback"),
+            content: TextField(
+                onChanged: (value) {
+                  setState(() {
+                    feedback = value;
+                  });
+                },
+                style: TextStyle(color: AppColours.textColor),
+                maxLines: 8,
+                decoration: InputDecoration(
+                  fillColor: AppColours.widgetColor,
+                  hintText: "Entre your feedback",
+                  hintStyle: TextStyle(color: Colors.black45, fontSize: 15.sp),
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(width: 5, color: AppColours.color),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                )),
+            actions: [okButton, cancelButton],
+          );
+        });
   }
 }

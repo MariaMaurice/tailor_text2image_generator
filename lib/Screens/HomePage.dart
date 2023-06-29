@@ -1,25 +1,17 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gp/Screens/DisplayImage.dart';
 import 'package:gp/providers/AuthService.dart';
-import 'package:hexcolor/hexcolor.dart';
-import 'package:http/http.dart' as http;
-import 'package:country_picker/country_picker.dart';
 import 'package:sizer/sizer.dart';
-import 'package:gp/widgets/AppDrawer.dart';
 import 'package:gp/widgets/DeafultButton.dart';
-import 'package:gp/widgets/TextField.dart';
 import '../Constants/AppColours.dart';
 import '../widgets/BottomBar.dart';
-import '../widgets/Category.dart';
-import '../widgets/Logo.dart';
 
 class HomePage extends StatefulWidget {
   @override
   _HomePage createState() => _HomePage();
   static bool isLoading = true;
+  static String category = '';
 }
 
 class _HomePage extends State<HomePage> {
@@ -43,23 +35,47 @@ class _HomePage extends State<HomePage> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.fromLTRB(2.w, 7.h, 2.w, 3.h),
-                  child: DefultTextField(
-                    text: "Imagine a dress design here...",
-                    isPassword: false,
-                    haveicon: false,
-                    icon: Icons.create,
-                    maxln: 8,
-                    nwAT: 'home',
-                  ),
-                ),
+                    padding: EdgeInsets.fromLTRB(2.w, 7.h, 2.w, 3.h),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 7.w, vertical: 3.w),
+                        child: TextField(
+                            onChanged: (value) {
+                              setState(() {
+                                DisplayImage.text = value;
+                              });
+                            },
+                            style: TextStyle(color: AppColours.textColor),
+                            maxLines: 8,
+                            decoration: InputDecoration(
+                              fillColor: AppColours.widgetColor,
+                              hintText: HomePage.category == "Wedding Dress"
+                                  ? "Off-the-shoulder straps dip down into "
+                                      "a flattering sweetheart neckline and fitted bodice with architectural"
+                                      " contour seaming and bow belt detail to highlight the figure."
+                                  : HomePage.category == "Casual"
+                                      ? "Space war hoodie"
+                                      : "Imagine a dress design here...",
+                              hintStyle: TextStyle(
+                                  color: Colors.black45, fontSize: 15.sp),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 5, color: AppColours.color),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            )),
+                      ),
+                    )),
                 Align(
                     alignment: Alignment.topLeft,
                     child: Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: 4.w, vertical: 1.w),
                         child: Text(
-                          "Choose a style",
+                          "Choose category",
                           style: TextStyle(
                             color: AppColours.textColor,
                             fontSize: 15.sp,
@@ -76,7 +92,7 @@ class _HomePage extends State<HomePage> {
                               decoration: new BoxDecoration(
                                 border: Border.all(
                                     width: 3,
-                                    color: Category.category == "General"
+                                    color: HomePage.category == "Wedding Dress"
                                         ? Colors.amber
                                         : Colors.black87),
                                 borderRadius:
@@ -88,61 +104,7 @@ class _HomePage extends State<HomePage> {
                                   child: GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        Category.category = "General";
-                                      });
-                                    },
-                                    child: Stack(
-                                        alignment: Alignment.bottomCenter,
-                                        children: [
-                                          Image(
-                                            width: 150,
-                                            height: 250,
-                                            image: AssetImage(
-                                                'assets/General.jpg'),
-                                          ),
-                                          Container(
-                                            width: 150,
-                                            height: 30,
-                                            decoration: BoxDecoration(
-                                              color: Colors.black87,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.black26,
-                                                  offset: Offset(0.0, 2.0),
-                                                  blurRadius: 20.0,
-                                                ),
-                                              ],
-                                            ),
-                                            child: GridTileBar(
-                                                title: Text("Genral",
-                                                    textAlign: TextAlign.center,
-                                                    style: new TextStyle(
-                                                        fontSize: 12.sp,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white))),
-                                          ),
-                                        ]),
-                                  )))),
-                      Padding(
-                          padding: EdgeInsets.all(2.w),
-                          child: Container(
-                              decoration: new BoxDecoration(
-                                border: Border.all(
-                                    width: 3,
-                                    color: Category.category == "Wedding Dress"
-                                        ? Colors.amber
-                                        : Colors.black87),
-                                borderRadius:
-                                    new BorderRadius.all(Radius.circular(20.0)),
-                                shape: BoxShape.rectangle,
-                              ),
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(15),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        Category.category = "Wedding Dress";
+                                        HomePage.category = "Wedding Dress";
                                       });
                                     },
                                     child: Stack(
@@ -184,7 +146,7 @@ class _HomePage extends State<HomePage> {
                               decoration: new BoxDecoration(
                                 border: Border.all(
                                     width: 3,
-                                    color: Category.category == "Casual"
+                                    color: HomePage.category == "Casual"
                                         ? Colors.amber
                                         : Colors.black87),
                                 borderRadius:
@@ -196,7 +158,7 @@ class _HomePage extends State<HomePage> {
                                   child: GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        Category.category = "Casual";
+                                        HomePage.category = "Casual";
                                       });
                                     },
                                     child: Stack(
@@ -205,8 +167,8 @@ class _HomePage extends State<HomePage> {
                                           Image(
                                             width: 150,
                                             height: 250,
-                                            image:
-                                                AssetImage('assets/Casual.png'),
+                                            image: AssetImage(
+                                                'assets/General.jpg'),
                                           ),
                                           Container(
                                             height: 30,
@@ -233,32 +195,6 @@ class _HomePage extends State<HomePage> {
                                         ]),
                                   )))),
                     ])),
-
-                // SingleChildScrollView(
-                //     scrollDirection: Axis.horizontal,
-                //     child: Row(
-                //       children: [
-                //         Category(name: "Wedding Dress"),
-                //         Category(name: "Casual Women Wear"),
-                //
-                //         // Container(
-                //         //   child: Category(name: "Suit"),
-                //         //   width: 53.w,
-                //         // ),
-                //         // Container(
-                //         //   child: Category(name: "Wedding Guist Dress"),
-                //         //   width: 53.w,
-                //         // ),
-                //         // Container(
-                //         //   child: Category(name: "Casual Dress"),
-                //         //   width: 53.w,
-                //         // ),
-                //         // Container(
-                //         //   child: Category(name: "Casual Men Wear"),
-                //         //   width: 53.w,
-                //         // ),
-                //       ],
-                //     )),
                 SizedBox(height: 2.h),
                 DefultButton(
                   text: "Submit",
@@ -266,38 +202,7 @@ class _HomePage extends State<HomePage> {
                   nwAT: 'home',
                 ),
               ],
-              //),
-              // onWillPop: () {
-              //   // Widget okButton = FlatButton(
-              //   //     child: Text("Yes"),
-              //   //     onPressed: () {
-              //   //       exit(0);
-              //   //     });
-              //   // Widget cancelButton = FlatButton(
-              //   //     child: Text("cancel"),
-              //   //     onPressed: () {
-              //   //       Navigator.of(context).pop();
-              //   //     });
-              //   showDialog(
-              //       context: context,
-              //       builder: (context) {
-              //         return AlertDialog(
-              //           shape: RoundedRectangleBorder(
-              //               borderRadius: new BorderRadius.circular(15)),
-              //           title: Text("Exit"),
-              //           content: Text("Are you sure you want to exit?"),
-              //           //actions: [okButton, cancelButton],
-              //         );
-              //       });
-              //   Future<bool>? c;
-              //   return c!;
-              // },
             )));
-  }
-
-  void showSnackBar(BuildContext context, String text) {
-    final snackBar = SnackBar(content: Text(text));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
 

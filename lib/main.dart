@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:gp/Screens/PervWork.dart';
 import 'package:sizer/sizer.dart';
 import 'Screens/Login.dart';
-import 'Screens/SignUp.dart';
 import 'Screens/SplachScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:dcdg/dcdg.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,9 +30,7 @@ class MyApp extends StatelessWidget {
           ),
           routes: {
             '/': (context) => Starting(),
-            '/Login': (context) => Login(),
             '/Home': (context) => HomePage(),
-            '/registration': (context) => SignUp(),
             '/image': (context) => DisplayImage(),
             '/prevWork': (context) => PrevWork(),
           });
