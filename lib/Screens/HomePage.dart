@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gp/Screens/DisplayImage.dart';
 import 'package:gp/providers/AuthService.dart';
+import 'package:gp/widgets/AdminBottomBar.dart';
 import 'package:sizer/sizer.dart';
 import 'package:gp/widgets/DeafultButton.dart';
 import '../Constants/AppColours.dart';
@@ -12,21 +13,39 @@ class HomePage extends StatefulWidget {
   _HomePage createState() => _HomePage();
   static bool isLoading = true;
   static String category = '';
+  static bool isAdmin = false;
 }
 
 class _HomePage extends State<HomePage> {
   void initState() {
     super.initState();
     DisplayImage.text = '';
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      if (user != null) AuthService.Email = user.uid;
+    FirebaseAuth.instance.authStateChanges().listen((User? user) async {
+      if (user != null) {
+        AuthService.Email = user.uid;
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: BottomBar(),
+        // drawer: Drawer(
+        //   child:Column(
+        //     children: [
+        //       ListTile(
+        //         leading: Icon(Icons.account_circle_outlined,color: Colors.black),
+        //         title:  Text('Contacts'),
+        //         onTap: () {
+        //           Navigator.of(context).pushNamed('/Contacts');
+        //
+        //         },
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        bottomNavigationBar:
+            HomePage.isAdmin == true ? AdminBottomBar() : BottomBar(),
         backgroundColor: AppColours.backgroundColor,
         resizeToAvoidBottomInset: true,
         body: SingleChildScrollView(

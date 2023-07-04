@@ -6,6 +6,7 @@ class AuthService {
   static late String ID;
   static String? Email;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   Future<String?> signInWithGoogle() async {

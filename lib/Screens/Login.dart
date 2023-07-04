@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gp/Screens/HomePage.dart';
 import 'package:gp/providers/AuthService.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -16,6 +17,7 @@ class _Login extends State<Login> {
   @override
   void initState() {
     super.initState();
+    HomePage.isAdmin = false;
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user != null) {
         print('User is signed in!');
@@ -44,7 +46,20 @@ class _Login extends State<Login> {
                     buttonType: ButtonType.google,
                     onPressed: () async {
                       try {
-                        await AuthService().signInWithGoogle();
+                        await AuthService().signInWithGoogle().then((value) => {
+                              FirebaseAuth.instance
+                                  .authStateChanges()
+                                  .listen((User? user) {
+                                print('User is signed in!');
+                                if (user!.uid ==
+                                    "lqiH5q50vyLgfe0z2TLhMP1RuwC2") {
+                                  HomePage.isAdmin = true;
+                                }
+                                Navigator.pushReplacementNamed(
+                                    context, '/Home');
+                              })
+                            });
+
                         Navigator.pushReplacementNamed(context, '/Home');
                       } catch (e) {
                         if (e is FirebaseAuthException) {

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gp/Constants/AppColours.dart';
 import 'package:flutter/material.dart';
+import 'package:gp/Screens/HomePage.dart';
 import 'package:gp/providers/AuthService.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../widgets/Logo.dart';
@@ -20,6 +21,7 @@ class _StartingState extends State<Starting>
   @override
   void initState() {
     super.initState();
+    HomePage.isAdmin = false;
     _controller = AnimationController(
       duration: Duration(seconds: 3),
       vsync: this,
@@ -41,6 +43,9 @@ class _StartingState extends State<Starting>
           } else {
             print('User is signed in!');
             // AuthService.Email = user.email;
+            if (user.uid == "lqiH5q50vyLgfe0z2TLhMP1RuwC2") {
+              HomePage.isAdmin = true;
+            }
             Navigator.pushReplacementNamed(context, '/Home');
           }
         });

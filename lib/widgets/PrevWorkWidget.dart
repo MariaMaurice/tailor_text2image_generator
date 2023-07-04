@@ -1,11 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:full_screen_image_null_safe/full_screen_image_null_safe.dart';
-import 'package:gp/Constants/AppColours.dart';
-import 'package:gp/Screens/DisplayImage.dart';
-import 'package:gp/providers/DataBase.dart';
 import 'package:gp/providers/HistoryItem.dart';
-import 'package:gp/widgets/BottomBar.dart';
 import 'package:sizer/sizer.dart';
 
 class PrevWorkWid extends StatefulWidget {

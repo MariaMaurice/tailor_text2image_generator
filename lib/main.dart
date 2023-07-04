@@ -1,4 +1,6 @@
+import 'package:firebase_admin/firebase_admin.dart';
 import 'package:gp/Screens/DisplayImage.dart';
+import 'package:gp/Screens/Feedbacks.dart';
 import 'package:gp/Screens/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:gp/Screens/PervWork.dart';
@@ -11,6 +13,7 @@ import 'package:dcdg/dcdg.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  // Initialize the SDK with your service account credentials
   runApp(const MyApp());
 }
 
@@ -33,6 +36,8 @@ class MyApp extends StatelessWidget {
             '/Home': (context) => HomePage(),
             '/image': (context) => DisplayImage(),
             '/prevWork': (context) => PrevWork(),
+            '/Login': (context) => Login(),
+            '/feedback': (context) => Feedbacks(),
           });
     });
   }

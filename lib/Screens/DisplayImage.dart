@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:gp/widgets/AdminBottomBar.dart';
 import 'package:gp/widgets/DeafultButton.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
@@ -34,7 +35,8 @@ class _DisplayImage extends State<DisplayImage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomBar(),
+      bottomNavigationBar:
+          HomePage.isAdmin == true ? AdminBottomBar() : BottomBar(),
       backgroundColor: AppColours.backgroundColor,
       resizeToAvoidBottomInset: true,
       body: !HomePage.isLoading

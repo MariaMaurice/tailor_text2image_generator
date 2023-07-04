@@ -4,12 +4,13 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:gp/providers/AuthService.dart';
 import 'package:sizer/sizer.dart';
 
-class BottomBar extends StatefulWidget {
+class AdminBottomBar extends StatefulWidget {
   @override
-  State<BottomBar> createState() => _BottomBar();
+  State<AdminBottomBar> createState() => _AdminBottomBar();
 }
 
-class _BottomBar extends State<BottomBar> with SingleTickerProviderStateMixin {
+class _AdminBottomBar extends State<AdminBottomBar>
+    with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
@@ -38,12 +39,12 @@ class _BottomBar extends State<BottomBar> with SingleTickerProviderStateMixin {
             color: Colors.black,
             tabs: [
               GButton(
-                icon: Icons.home,
+                icon: Icons.home_outlined,
                 text: 'Home',
               ),
               GButton(
-                icon: Icons.history_outlined,
-                text: 'My work',
+                icon: Icons.feedback_outlined,
+                text: 'Feedbacks',
               ),
               GButton(
                 icon: Icons.logout,
@@ -58,11 +59,11 @@ class _BottomBar extends State<BottomBar> with SingleTickerProviderStateMixin {
               if (_selectedIndex == 0) {
                 Navigator.of(context).pushReplacementNamed('/Home');
               } else if (_selectedIndex == 1) {
-                Navigator.of(context).pushReplacementNamed('/prevWork');
+                AuthService().signOut().then((value) =>
+                    Navigator.of(context).pushReplacementNamed('/feedback'));
               } else if (_selectedIndex == 2) {
-                AuthService().signOut().then((value) => Navigator.of(context)
-                    .pushNamedAndRemoveUntil(
-                        '/Login', (Route<dynamic> route) => false));
+                AuthService().signOut().then((value) =>
+                    Navigator.of(context).pushReplacementNamed('/Login'));
               }
             },
           ),

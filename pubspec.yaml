@@ -51,7 +51,7 @@ dependencies:
   firebase_database: ^10.0.9
   path_provider:
   dcdg: ^4.1.0
-
+  firebase_admin:
 dev_dependencies:
   flutter_test:
     sdk: flutter
