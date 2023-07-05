@@ -6,7 +6,6 @@ import 'package:gp/providers/AuthService.dart';
 import 'package:gp/providers/FeedbackItem.dart';
 import 'package:http/http.dart' as http;
 import 'package:gp/providers/HistoryItem.dart';
-
 import '../Screens/HomePage.dart';
 
 class DataBase {
@@ -79,40 +78,37 @@ class DataBase {
   static Future<void> addFeedback(String feedback) async {
     final _firebaseStorage = FirebaseStorage.instance;
 
-    for (int i = 0; i < DisplayImage.imagePath.length; i++) {
-      //Select Image
-      var f;
-      if (HomePage.category == "Wedding Dress" ||
-          HomePage.category == "Casual") {
-        f = await DisplayImage.imagePath[i]
-            .writeAsBytes(base64Decode(DisplayImage.bytes[i]));
-      } else {
-        f = await DisplayImage.imagePath[i].writeAsBytes(DisplayImage.bytes[i]);
-      }
+    //Select Image
+    var f;
+    if (HomePage.category == "Wedding Dress" || HomePage.category == "Casual") {
+      f = await DisplayImage.imagePath[0]
+          .writeAsBytes(base64Decode(DisplayImage.bytes[0]));
+    } else {
+      f = await DisplayImage.imagePath[0].writeAsBytes(DisplayImage.bytes[0]);
+    }
 
-      var file = File(f.path);
-      var snapshot = await _firebaseStorage
-          .ref()
-          .child('images/${DateTime.now().microsecondsSinceEpoch}$i')
-          .putFile(file);
+    var file = File(f.path);
+    var snapshot = await _firebaseStorage
+        .ref()
+        .child('images/${DateTime.now().microsecondsSinceEpoch}')
+        .putFile(file);
 
-      var downloadUrl = await snapshot.ref.getDownloadURL();
+    var downloadUrl = await snapshot.ref.getDownloadURL();
 
-      final url =
-          'https://tailor-6cc1a-default-rtdb.firebaseio.com/Feedback.json';
-      try {
-        final response = await http.post(
-          Uri.parse(url),
-          body: json.encode({
-            'text': DisplayImage.text,
-            'image': downloadUrl ?? "",
-            "feedback": feedback
-          }),
-        );
-      } catch (error) {
-        print(error);
-        throw error;
-      }
+    final url =
+        'https://tailor-6cc1a-default-rtdb.firebaseio.com/Feedback.json';
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: json.encode({
+          'text': DisplayImage.text,
+          'image': downloadUrl ?? "",
+          "feedback": feedback
+        }),
+      );
+    } catch (error) {
+      print(error);
+      throw error;
     }
   }
 
